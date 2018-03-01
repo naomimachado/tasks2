@@ -1,3 +1,13 @@
+Design Choices:
+- Admin is the super user.
+- Admin manages all the managers who do not have a higher manager.
+- A user can not be his own manager.
+- Only a users manager an assign him/her tasks.
+- Only the user whom the task belongs to can start and stop the time blocks
+- The user can update his/her time blocks
+- The time blocks must be entered in UTC format.
+- The users manager can view the task in detail and delete and update time blocks
+
 # Tasks2
 
 To start your Phoenix server:
