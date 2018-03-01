@@ -1,0 +1,90 @@
+<script>
+  window.timeblock_path = "<%= timeblock_path(@conn, :index) %>";
+  window.current_user_id = "<%= @current_user.id %>";
+</script>
+
+<h2>Show Task</h2>
+
+<ul>
+
+  <li>
+    <strong>Assigned By:</strong>
+    <%= @task.assigned_by.name %>
+  </li>
+
+  <li>
+    <strong>Assigned To:</strong>
+    <%= @task.assigned_to.name %>
+  </li>
+
+  <li>
+    <strong>Task ID:</strong>
+    <%= @task.id %>
+  </li>
+
+  <li>
+    <strong>Task name:</strong>
+    <%= @task.task_name %>
+  </li>
+
+  <li>
+    <strong>Task description:</strong>
+    <%= @task.task_description %>
+  </li>
+
+  <li>
+    <strong>Completed:</strong>
+    <%= @task.completed %>
+  </li>
+
+</ul>
+
+<strong> Time Blocks</strong>
+<br>
+
+<table class="table table-hover">
+  <tr>
+    <th> Time ID </th>
+    <th> Start Time </th>
+    <th> End Time</th>
+    <th> Delete Time Block</th>
+    <th> Update Start Time</th>
+    <th> Update End Time</th>
+  </tr>
+
+  <tbody>
+<%= Enum.map @timeblocks, fn timeblock -> %>
+    <tr>
+      <td><%= elem(timeblock, 2) %></td>
+      <td><%= elem(timeblock, 0) %></td>
+      <td><%= elem(timeblock, 1) %></td>
+      <td>
+        <button class="delete-button btn btn-danger"
+        				data-time-id="<%= elem(timeblock, 2) %>"
+                onClick="window.location.reload();"> Delete TimeBlock
+        </button>
+      </td>
+      <td>
+        <input type="datetime-local" id="start_edit"></input>
+        <button class="update-start-button btn btn-secondary"
+        				data-time-id="<%= elem(timeblock, 2) %>"
+                onClick="window.location.reload();"> Update Start Time
+        </button>
+      </td>
+      <td>
+        <input type="datetime-local" id="end_edit"></input>
+        <button class="update-end-button btn btn-secondary"
+        				data-time-id="<%= elem(timeblock, 2) %>"
+                onClick="window.location.reload();"> Update End Time
+        </button>
+      </td>
+
+    </tr>
+<% end %>
+</tbody>
+</table>
+
+
+<span><%= link "Edit Task", to: task_path(@conn, :edit, @task) %></span>
+<br>
+<span><%= link "Back to Task List", to: task_path(@conn, :index) %></span>

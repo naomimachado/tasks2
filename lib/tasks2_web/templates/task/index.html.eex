@@ -1,0 +1,79 @@
+<script>
+  window.timeblock_path = "<%= timeblock_path(@conn, :index) %>";
+  window.current_user_id = "<%= @current_user.id %>";
+</script>
+
+<h2>Tasks Assigned To Me</h2>
+<%= for task <- @tasks do %>
+  <%= if (task.assigned_to.id == @current_user.id) do %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"> Task Title:<%= task.task_name %> </h5>
+          <p>Assigned By: <%= task.assigned_by.name %></p>
+          <p>Assigned To: <%= task.assigned_to.name %></p>
+          <p>Description: <%= task.task_description %> </p>
+          <p> Completed: <%= task.completed %> </p>
+          <p> Time blocks:</p>
+          <p><button class="time-button btn btn-primary" data-task-id="<%= task.id %>" data-time="<%= DateTime.utc_now %>"
+            data-type="start" data-clicked="No">Start</button></p>
+          <p> <button class="time-button btn btn-primary" data-task-id="<%= task.id %>" data-time="<%= DateTime.utc_now %>" data-type="end"
+            data-clicked="No">End</button></p>
+        <span><%= link "Task Details", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+
+      </div>
+    </div>
+    <% end %>
+<% end %>
+<br>
+
+<h2>Tasks Assigned By Me</h2>
+<%= for task <- @tasks do %>
+  <%= if (task.assigned_by.id == @current_user.id) do %>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"> Task Title:<%= task.task_name %> </h5>
+      <p>Assigned By: <%= task.assigned_by.name %></p>
+      <p>Assigned To: <%= task.assigned_to.name %></p>
+      <p>Description: <%= task.task_description %> </p>
+      <p> Completed: <%= task.completed %> </p>
+
+      <span><%= link "Task Details", to: task_path(@conn, :show, task), class: "btn btn-default btn-xs" %></span>
+      <span><%= link "Edit", to: task_path(@conn, :edit, task), class: "btn btn-default btn-xs" %></span>
+      <span><%= link "Delete", to: task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+    </div>
+  </div>
+    <% end %>
+<% end %>
+  </tbody>
+</table>
+<br>
+<h2>All system tasks</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Assigned By</th>
+      <th>Assigned To</th>
+      <th>Task name</th>
+      <th>Task description</th>
+      <th>Completed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for task <- @tasks do %>
+    <tr>
+      <td><%= task.assigned_by.name %></td>
+      <td><%= task.assigned_to.name %></td>
+      <td><%= task.task_name %></td>
+      <td><%= task.task_description %></td>
+      <td><%= task.completed %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "Assign a New Task", to: task_path(@conn, :new) %></span>
